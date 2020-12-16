@@ -2,11 +2,11 @@ import random
 
 
 class Node:
-    def __init__(self, data):
+    def __init__(self, data, level=0):
         self.data = data
         self.next = None
         self.down = None
-        self.level = None
+        self.level = level
 
     def __call__(self, *args, **kwargs):
         print(self.data)
@@ -137,7 +137,10 @@ class Skiplist(object):
                 if target == TgtNode.data:
                     return True
                 elif target <= TgtNode.data:
-                    return False
+                    if TgtNode.level > 0:
+                        TgtNode = self.LinkedLists[TgtNode.level - 1].startnode
+                    else:
+                        return False
                 else:
                     if TgtNode.down is None:
                         if TgtNode.next is None:
@@ -169,7 +172,7 @@ class Skiplist(object):
 
         TgtNode = self.LinkedLists[self.level].startnode
         if TgtNode is None:
-            self.LinkedLists[self.level].startnode = Node(num)
+            self.LinkedLists[self.level].startnode = Node(num, self.level)
             self.LinkedLists[self.level].tailnode = self.LinkedLists[self.level].startnode
             self.LinkedLists[self.level].tail = 1
         else:
@@ -180,7 +183,7 @@ class Skiplist(object):
                             CoinTossGeneration(self, TgtNode)
                             break
                         else:
-                            add_node = Node(num)
+                            add_node = Node(num, self.level)
                             add_node.down = None
                             add_node.level = 0
                             self.LinkedLists[0].AddNodeIndx(self.LinkedLists[0].SearchNode(TgtNode), add_node)
@@ -191,7 +194,7 @@ class Skiplist(object):
                 else:
                     if TgtNode.next is None:
                         if TgtNode.down is None:
-                            add_node = Node(num)
+                            add_node = Node(num, self.level)
                             add_node.down = None
                             add_node.level = 0
                             self.LinkedLists[0].Append(add_node)
@@ -219,7 +222,10 @@ class Skiplist(object):
                     TgtNode = BackupNode
                 return True
             elif num < TgtNode.data:
-                return False
+                if TgtNode.level > 0:
+                    TgtNode = self.LinkedLists[TgtNode.level-1].startnode
+                else:
+                    return False
             else:
                 if TgtNode.next is None:
                     if TgtNode.down is not None:
@@ -238,7 +244,7 @@ obj = Skiplist()
 obj.add(1)
 obj.add(2)
 obj.add(3)
-print(obj.search(0))
+print(obj.search(1))
 obj.erase(4)
 print(obj.search(1))
 obj.erase(0)
