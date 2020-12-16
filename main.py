@@ -235,14 +235,12 @@ class Skiplist(object):
 
 # Your Skiplist object will be instantiated and called as such:
 obj = Skiplist()
+obj.add(1)
+obj.add(2)
 obj.add(3)
-obj.add(4)
-obj.add(5)
-print(obj.search(5))
-obj.erase(5)
-print(obj.search(5))
-# obj.add(num)
-# param_3 = obj.erase(num)
-#
-# obj = Skiplist()
-# param_1 = obj.search(4)
+print(obj.search(0))
+obj.erase(4)
+print(obj.search(1))
+obj.erase(0)
+obj.erase(1)
+print(obj.search(1))
